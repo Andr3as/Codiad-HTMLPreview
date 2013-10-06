@@ -24,7 +24,8 @@
             var _this = this;
             amplify.subscribe("context-menu.onShow", function(obj){
                 var ext = _this.getExtension(obj.path);
-                if (ext == "html" || ext == "php") {
+                var defaultExt = ["html", "htm", "php", "php4", "php5", "phtml"];
+                if (defaultExt.indexOf(ext) !== -1) {
                     $('#context-menu').append('<hr class="file-only html-preview">');
                     $('#context-menu').append('<a class="file-only html-preview" onclick="codiad.HTMLPreview.setDefault($(\'#context-menu\').attr(\'data-path\'));"><span class="icon-check"></span>Set as preview</a>');
                 }
