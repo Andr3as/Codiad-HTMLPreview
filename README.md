@@ -5,7 +5,6 @@ Open html file as preview during editing a css file.
 ##Installation
 
 - Download the zip file and unzip it to your plugin folder.
-- Enable this plugin in the plugin manager.
 
 ##Usage
 
