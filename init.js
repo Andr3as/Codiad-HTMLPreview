@@ -33,20 +33,18 @@
             amplify.subscribe("context-menu.onHide", function(){
                 $('.html-preview').remove();
             });
-            amplify.subscribe("active.onOpen", function(path){
-                setTimeout(function(){
-                    if (codiad.editor.getActive() !== null) {
-                        var manager = codiad.editor.getActive().commands;
-                        manager.addCommand({
-                            name: 'OpenPreview',
-                            bindKey: "Ctrl-O",
-                            exec: function () {
-                                _this.showPreview();
-                            }
-                        });
-                    }
-                }, 10);
+            //Register preview callbacks
+            amplify.subscribe("helper.onPreview", function(path){
+                var ext = _this.getExtension(path);
+                if (ext == "css") {
+                    _this.showPreview(path);
+                    return false;
+                }
             });
+            //Load helper
+            if (typeof(codiad.PreviewHelper) == 'undefined') {
+                $.getScript(this.path+"previewHelper.js");
+            }
         },
         
         //////////////////////////////////////////////////////////
@@ -68,23 +66,19 @@
         //
         //  Show preview
         //
+        //  Parameter:
+        //
+        //  path - {String} - File path
+        //
 		//////////////////////////////////////////////////////////
-        showPreview: function() {
-            var path = codiad.active.getPath();
-            var ext = this.getExtension(path);
-            if (ext == "md" || ext == "markdown") {
-                //Show preview dialog
-                if (typeof(codiad.MarkdownPreview) != 'undefined') {
-                    codiad.MarkdownPreview.showDialog(codiad.active.getPath());
-                }
-            } else if (ext == "css") {
-                if (this.default === "") {
-                    codiad.filemanager.openInBrowser(path);
-                } else {
-                    codiad.filemanager.openInBrowser(this.default);
-                }
-            } else {
+        showPreview: function(path) {
+            if (typeof(path) == 'undefined') {
+                path = codiad.active.getPath();
+            }
+            if (this.default === "") {
                 codiad.filemanager.openInBrowser(path);
+            } else {
+                codiad.filemanager.openInBrowser(this.default);
             }
         },
         
