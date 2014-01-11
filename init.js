@@ -59,7 +59,6 @@
         setDefault: function(path) {
             this.default = path;
             codiad.message.success("Default added");
-            codiad.filemanager.contextMenuHide();
         },
         
         //////////////////////////////////////////////////////////
